@@ -20,4 +20,27 @@ public class updateData {
             e.printStackTrace();
         }
     }
+
+    public static void updateSupply(int supplyId, String newName, int newQuantity) {
+        String sql = "UPDATE supplies SET name = ?, quantity = ? WHERE id = ?;";
+
+        try (Connection conn = MySQLConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newName);
+            pstmt.setInt(2, newQuantity);
+            pstmt.setInt(3, supplyId);
+
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("Supply was updated successfully!");
+            } else {
+                System.out.println("No supply was updated.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error occurred during the update operation.");
+            e.printStackTrace();
+        }
+    }
 }

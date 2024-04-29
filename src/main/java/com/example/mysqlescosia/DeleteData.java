@@ -23,4 +23,25 @@ public class DeleteData {
             e.printStackTrace();
         }
     }
+
+    public static void deleteSupply(int supplyId) {
+        String sql = "DELETE FROM supplies WHERE id = ?;";
+
+        try (Connection conn = MySQLConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, supplyId);
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("A supply was deleted successfully!");
+            } else {
+                System.out.println("No supply was deleted.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error occurred during deleting supply.");
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.io.IOException;
 
 public class AppController {
+    public static int supplyID;
 
     @FXML
     private TextField txtUsername;
@@ -57,18 +58,19 @@ public class AppController {
     }
 
     @FXML
-    private void onAddSupplyClick() {
+    protected void onAddSupplyClick() {
+        String supplyName =txtSupplyName.getText();
+        Date date = Date.valueOf(datePicker.getValue());
+        Integer quantity = Integer.valueOf(txtQuantity.getText());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("add-supply.fxml"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("add-supply.fxml"));
             Parent root = loader.load();
-
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setTitle("Add Supply");
-            stage.setScene(scene);
-
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            Stage newStage = new Stage();
+            newStage.setTitle("Add New Supply");
+            newStage.setScene(new Scene(root));
+            newStage.initModality(Modality.APPLICATION_MODAL);
+            newStage.showAndWait();
+            InsertData.insertSupply(supplyName, quantity, date); //call
 
         } catch (IOException e) {
             lblStatus.setText("Failed to load the Add Supply page.");
@@ -76,26 +78,6 @@ public class AppController {
         }
     }
 
-    private void insertSupply(String supplyName, int quantity, Date dateAdded) {
-        String sql = "INSERT INTO supplies (name, quantity, date_added) VALUES (?, ?, ?)";
-        try (Connection connection = MySQLConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setString(1, supplyName);
-            preparedStatement.setInt(2, quantity);
-            preparedStatement.setDate(3, dateAdded);
-
-            int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                lblStatus.setText("Supply data inserted successfully!");
-            } else {
-                lblStatus.setText("No new supply was added.");
-            }
-        } catch (SQLException e) {
-            lblStatus.setText("Database error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     private void onEditSupplyClick() {
@@ -110,6 +92,7 @@ public class AppController {
     @FXML
     private void onDeleteSupplyClick() {
         lblStatus.setText("Delete Supply Clicked");
+        DeleteData.deleteSupply(supplyID);
     }
 
     @FXML
