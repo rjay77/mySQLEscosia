@@ -24,7 +24,7 @@ public class DeleteData {
         }
     }
 
-    public static void deleteSupply(int supplyId) {
+    public static boolean deleteSupply(int supplyId) {
         String sql = "DELETE FROM supplies WHERE id = ?;";
 
         try (Connection conn = MySQLConnection.getConnection();
@@ -42,6 +42,7 @@ public class DeleteData {
             System.out.println("Error occurred during deleting supply.");
             e.printStackTrace();
         }
+        return false;
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.mysqlescosia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class updateData {
     public static void main(String[] args) {
@@ -21,7 +22,7 @@ public class updateData {
         }
     }
 
-    public static void updateSupply(int supplyId, String newName, int newQuantity) {
+    public static boolean updateSupply(int supplyId, String newName, int newQuantity) {
         String sql = "UPDATE supplies SET name = ?, quantity = ? WHERE id = ?;";
 
         try (Connection conn = MySQLConnection.getConnection();
@@ -33,14 +34,11 @@ public class updateData {
 
             int affectedRows = pstmt.executeUpdate();
 
-            if (affectedRows > 0) {
-                System.out.println("Supply was updated successfully!");
-            } else {
-                System.out.println("No supply was updated.");
-            }
+            return affectedRows > 0;
         } catch (SQLException e) {
             System.out.println("Error occurred during the update operation.");
             e.printStackTrace();
+            return false;
         }
     }
 }

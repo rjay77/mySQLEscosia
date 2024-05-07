@@ -1,15 +1,19 @@
 package com.example.mysqlescosia;
 
+import java.time.LocalDate;
+
 public class Supply {
     private String name;
     private int quantity;
-    private String date;
+    private LocalDate date;
 
-    public Supply(String name, int quantity, String date) {
+    public Supply(String name, int quantity, LocalDate date) {
         this.name = name;
         this.quantity = quantity;
         this.date = date;
     }
+
+    // Getters
     public String getName() {
         return name;
     }
@@ -18,7 +22,7 @@ public class Supply {
         return quantity;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -31,9 +35,10 @@ public class Supply {
         this.quantity = quantity;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
+
     @Override
     public String toString() {
         return "Supply{" +

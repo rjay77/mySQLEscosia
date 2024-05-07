@@ -25,22 +25,22 @@ public class InsertData {
         }
     }
 
-    public static void insertSupply(String supplyName, int quantity, Date dateAdded) {
-        String sql = "INSERT INTO supplies (name, quantity, date_added) VALUES (?, ?, ?)";
-        try (Connection connection = MySQLConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, supplyName);
-            preparedStatement.setInt(2, quantity);
-            preparedStatement.setDate(3, new java.sql.Date(dateAdded.getTime()));
-            int rowsInserted = preparedStatement.executeUpdate();
+    public static void insertSupply(String itemName, int quantity, Date dateAdded) {
+        try (Connection c = MySQLConnection.getConnection();
+             PreparedStatement statement = c.prepareStatement(
+                     "INSERT INTO supplies (item_name, quantity, date_added) VALUES (?, ?, ?)"
+             )) {
+            statement.setString(1, itemName);
+            statement.setInt(2, quantity);
+            statement.setDate(3, dateAdded);
+            int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("Supply data inserted successfully");
-            } else {
-                System.out.println("No new supply was added.");
+                System.out.println("Supply inserted successfully");
             }
         } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+
 }
